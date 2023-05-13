@@ -1,0 +1,60 @@
+
+services:
+
+    # web server
+    # https://hub.docker.com/_/nginx
+    nginx:
+        container_name: pd2-nginx
+        image: nginx:latest
+        volumes:
+            - './nginx:/etc/nginx/templates'
+            - './src:/var/www/src'
+        ports:
+            - 80:80
+        environment:
+            - TZ=Europe/Riga
+            - PHP_CONTAINER_NAME=pd2-laravel
+            - SERVER_PORT=80
+            - SERVER_NAME=localhost
+            - DOCUMENT_ROOT=/var/www/src/public
+
+    # php
+    # https://hub.docker.com/_/php
+    php:
+        container_name: pd2-laravel
+        build: ./php
+        volumes:
+            - './src:/var/www/src'
+        working_dir: /var/www/src
+        ports:
+            - 9000:9000
+        environment:
+            - TZ=Europe/Riga
+            - APP_ROOT=/var/www/src
+
+    # mysql
+    # https://hub.docker.com/_/mysql
+    mysql:
+        container_name: pd2-mysql
+        image: mysql:latest
+        volumes:
+            - './mysql:/var/lib/mysql'
+        ports:
+            - 3306:3306
+        environment:
+            - TZ=Europe/Riga
+            - MYSQL_DATABASE=pd2
+            - MYSQL_USER=pd2admin
+            - MYSQL_PASSWORD=pd2pass
+            - MYSQL_ROOT_PASSWORD=root
+
+    # db gui
+    # https://hub.docker.com/_/adminer
+    database-admin:
+        container_name: pd2-adminer
+        image: adminer:latest
+        ports:
+            - 8080:8080
+        environment:
+            - TZ=Europe/Riga
+            - ADMINER_DEFAULT_SERVER=pd2-mysql
