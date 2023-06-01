@@ -62,6 +62,16 @@ class BookController extends Controller
             $book->price = $validatedData['price'];
             $book->year = $validatedData['year'];
             $book->display = (bool) ($validatedData['display'] ?? false);
+            if ($request->hasFile('image')) {
+                $uploadedFile = $request->file('image');
+                $extension = $uploadedFile->clientExtension();
+                $name = uniqid();
+                $book->image = $uploadedFile->storePubliclyAs(
+                '/',
+                $name . '.' . $extension,
+                'uploads'
+                );
+               }
             $book->save();
     
             return redirect('/books');
@@ -108,6 +118,17 @@ class BookController extends Controller
         $book->price = $validatedData['price'];
         $book->year = $validatedData['year'];
         $book->display = (bool) ($validatedData['display'] ?? false);
+
+        if ($request->hasFile('image')) {
+            $uploadedFile = $request->file('image');
+            $extension = $uploadedFile->clientExtension();
+            $name = uniqid();
+            $book->image = $uploadedFile->storePubliclyAs(
+            '/',
+            $name . '.' . $extension,
+            'uploads'
+            );
+        }           
         $book->save();
 
         return redirect('/books');
