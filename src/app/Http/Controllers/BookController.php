@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\Author;
+use App\Models\Genre;
 
 class BookController extends Controller
 {
@@ -32,12 +33,14 @@ class BookController extends Controller
      public function create()
     {
         $authors = Author::orderBy('name', 'asc')->get();
+        $genres = Genre::orderBy('id', 'asc')->get();
      return view(
              'book.form',
           [
              'title' => 'Pievienot jaunu grāmatu',
              'book' => new Book(),
              'authors' => $authors,
+             'genres' => $genres,
             ]
      );
     }
@@ -48,6 +51,7 @@ class BookController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|min:3|max:256',
                 'author_id' => 'required',
+                'genre_id' => 'required',
                 'description' => 'nullable',
                 'price' => 'nullable|numeric',
                 'year' => 'numeric',
@@ -58,6 +62,7 @@ class BookController extends Controller
             $book = new Book();
             $book->name = $validatedData['name'];
             $book->author_id = $validatedData['author_id'];
+            $book->genre_id = $validatedData['genre_id'];
             $book->description = $validatedData['description'];
             $book->price = $validatedData['price'];
             $book->year = $validatedData['year'];
@@ -87,13 +92,15 @@ class BookController extends Controller
     public function update(Book $book)
     {
         $authors = Author::orderBy('id', 'asc')->get();
+        $genres = Genre::orderBy('id', 'asc')->get();
 
         return view(
             'book.form',
             [
                 'title' => 'Rediģēt Grāmatu',
                 'book' => $book,
-                'authors' => $authors
+                'authors' => $authors,
+                'genres' => $genres,
 
             ]
         );
@@ -105,6 +112,7 @@ class BookController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|min:3|max:256',
             'author_id' => 'required',
+            'genre_id' => 'required',
             'description' => 'nullable',
             'price' => 'nullable|numeric',
             'year' => 'numeric',
@@ -114,6 +122,7 @@ class BookController extends Controller
 
         $book->name = $validatedData['name'];
         $book->author_id = $validatedData['author_id'];
+        $book->genre_id = $validatedData['genre_id'];
         $book->description = $validatedData['description'];
         $book->price = $validatedData['price'];
         $book->year = $validatedData['year'];

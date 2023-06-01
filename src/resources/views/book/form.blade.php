@@ -77,6 +77,29 @@
             @enderror
         </div>
 
+        <div class="mb-3">
+            <label for="book-genre" class="form-label">Žanrs</label>
+
+            <select
+                id="book-genre"
+                name="genre_id"
+                class="form-select @error('genre_id') is-invalid @enderror"
+    >
+                <option value="">Norādiet žanru!</option>
+                    @foreach($genres as $genre)
+                        <option
+                            value="{{ $genre->id }}"
+                            @if ($genre->id == old('genre_id', $book->genre->id ?? false)) 
+                            selected @endif
+                        >{{ $genre->name }}</option>
+                    @endforeach
+            </select>
+
+            @error('genre_id')
+                <p class="invalid-feedback">{{ $errors->first('genre_id') }}</p>
+            @enderror
+        </div>
+
 
         <div class="mb-3">
             <label for="book-description" class="form-label">Apraksts</label>
