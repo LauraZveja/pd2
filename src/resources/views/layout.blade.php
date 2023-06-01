@@ -43,6 +43,10 @@
                 </li>
 
                 <li class="nav-item">
+                    <a class="nav-link" href="/genres">Žanri</a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link" href="/logout">Beigt darbu</a>
                 </li>
 

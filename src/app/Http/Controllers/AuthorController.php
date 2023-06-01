@@ -42,12 +42,12 @@ $this->middleware('auth');
     // save new author
     public function put(Request $request)
     {
-        $validatedDate = $request->validate([
+        $validatedData = $request->validate([
             'name' => 'required',
         ]);
 
         $author = new Author();
-        $author->name = $validatedDate['name'];
+        $author->name = $validatedData['name'];
         $author->save();
 
         return redirect('/authors');
@@ -69,11 +69,11 @@ $this->middleware('auth');
     //update existing authors
     public function patch(Author $author, Request $request)
     {
-        $validatedDate = $request->validate([
+        $validatedData = $request->validate([
             'name' => 'required',
         ]);
 
-        $author->name = $validatedDate['name'];
+        $author->name = $validatedData['name'];
         $author->save();
 
         return redirect('/authors');

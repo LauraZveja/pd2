@@ -30,7 +30,7 @@
     <td>{{ $book->author->name }}</td>
     <td>{{ $book->year }}</td>
     <td>&euro; {{ number_format($book->price, 2, '.') }}</td>
-    <td>{!! $book->display ? '&#10004;&#65039;' : '&#10060;' !!}</td>
+    <td>{!! $book->display ? '&#x2714;' : '&#x274C;' !!}</td>
     <td>
         <a href="/books/update/{{$book->id}}" class="btn btn-outline-primary btn-sm">Labot</a> 
         / 
