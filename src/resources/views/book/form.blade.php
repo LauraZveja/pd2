@@ -91,7 +91,7 @@
                             value="{{ $genre->id }}"
                             @if ($genre->id == old('genre_id', $book->genre->id ?? false)) 
                             selected @endif
-                        >{{ $genre->name }}</option>
+                        >{{ $genre->genre }}</option>
                     @endforeach
             </select>
 
