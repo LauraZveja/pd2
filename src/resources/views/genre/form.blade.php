@@ -22,9 +22,9 @@
             <input
                 type="text"
                 id="genre-name"
-                name="genre"
-                class="form-control @error('name') is-invalid @enderror"
-                value="{{ old('name', $genre->name) }}"
+                genre="genre"
+                class="form-control @error('genre') is-invalid @enderror"
+                value="{{ old('genre', $genre->genre) }}"
             >
 
             @error('genre')

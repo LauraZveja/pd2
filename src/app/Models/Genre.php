@@ -9,6 +9,8 @@ class Genre extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['genre'];
+
     public function books()
     {
         return $this->hasMany(Book::class);

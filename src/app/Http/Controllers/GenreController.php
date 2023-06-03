@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Genre;
+use App\Http\Requests\GenreRequest;
+
 
 
 class GenreController extends Controller
@@ -32,14 +33,10 @@ class GenreController extends Controller
         );
     }
 
-    public function put(Request $request)
+    public function put(GenreRequest $request)
     {
-        $validatedData = $request->validate([
-            'genre' => 'required',
-        ]);
         $genre = new Genre();
-        $genre->genre = $validatedData['genre'];
-        $genre->save();
+        $this->saveGenreData($genre, $request);
         return redirect('/genres');
     }
 
@@ -54,13 +51,9 @@ class GenreController extends Controller
         );
     }
 
-    public function patch(Genre $genre, Request $request)
+    public function patch(Genre $genre, GenreRequest $request)
     {
-        $validatedData = $request->validate([
-            'genre' => 'required',
-        ]);
-        $genre->genre = $validatedData['genre'];
-        $genre->save();
+        $this->saveGenreData($genre, $request);
         return redirect('/genres');
     }
 
@@ -68,5 +61,12 @@ class GenreController extends Controller
     {
         $genre->delete();
         return redirect('/genres');
+    }
+
+    private function saveGenreData(Genre $genre, GenreRequest $request)
+    {
+        $validatedData = $request->validated();
+        $genre->fill($validatedData);
+        $genre->save();
     }
 }
