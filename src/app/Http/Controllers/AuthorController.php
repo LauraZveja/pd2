@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Author;
+use App\Http\Requests\AuthorRequest;
+
 
 class AuthorController extends Controller
 {
@@ -40,16 +42,11 @@ $this->middleware('auth');
     }
 
     // save new author
-    public function put(Request $request)
+    public function put(AuthorRequest $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required',
-        ]);
 
         $author = new Author();
-        $author->name = $validatedData['name'];
-        $author->save();
-
+        $this->saveAuthorData($author, $request);
         return redirect('/authors');
 
     }
@@ -67,15 +64,9 @@ $this->middleware('auth');
     }
 
     //update existing authors
-    public function patch(Author $author, Request $request)
+    public function patch(Author $author, AuthorRequest $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required',
-        ]);
-
-        $author->name = $validatedData['name'];
-        $author->save();
-
+        $this->saveAuthorData($author, $request);
         return redirect('/authors');
     }
 
@@ -84,5 +75,12 @@ $this->middleware('auth');
     {
         $author->delete();
         return redirect('/authors');
+    }
+
+    private function saveAuthorData(Author $author, AuthorRequest $request)
+    {
+        $validatedData = $request->validated();
+        $author->fill($validatedData);
+        $author->save();
     }
 }
