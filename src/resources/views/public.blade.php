@@ -28,7 +28,7 @@
 
         <footer class="mt-5 py-5">
             <div class="container">
-                L. Zveja, VeA, 2023
+                Laura Zveja, VeA, 2023
             </div>
         </footer>
 

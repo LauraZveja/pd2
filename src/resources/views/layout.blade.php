@@ -79,7 +79,7 @@
             <div class="container">
                 <div class="row py-5">
                     <div class="col">
-                        L. Zveja, 2023
+                        Laura Zveja, 2023
                     </div>
                 </div>
             </div>
