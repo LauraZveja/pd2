@@ -283,12 +283,17 @@ function renderRelated(books) {
         let card = document.createElement('div');
         card.classList = 'card';
 
-        // create card image
-        let img = document.createElement('img');
-        img.classList = 'card-img-top';
-        img.alt = book.name;
-        img.src = book.image;
-        card.appendChild(img);
+        // create card image container
+        let imgContainer = document.createElement('div');
+        imgContainer.classList = 'card-img-top';
+        imgContainer.style.height = '400px'; 
+        imgContainer.style.width = '100%'; 
+        imgContainer.style.backgroundImage = `url(${book.image})`;
+        imgContainer.style.backgroundSize = 'contain'; // Display the full image within the container
+        imgContainer.style.backgroundRepeat = 'no-repeat';
+        imgContainer.style.backgroundPosition = 'center'; 
+        card.appendChild(imgContainer);
+
 
         // create card body
         let cardBody = document.createElement('div');
@@ -317,6 +322,7 @@ function renderRelated(books) {
     // add row to document
     root.appendChild(row);
 }
+
 
 // set up link functionality
 function setupLinks() {
