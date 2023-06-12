@@ -23,11 +23,11 @@ function setupIndex() {
             removeLoader();
             renderIndex(books);
         })
-        .then(function(){
+        .then(function () {
             // setup link handling
             setupLinks();
         })
-    ;
+        ;
 }
 
 // setup single book page
@@ -45,7 +45,7 @@ function setupSingle(id) {
             removeLoader();
             renderSingle(book);
         })
-        .then(function(){
+        .then(function () {
             // load related books
             fetch('http://localhost/data/get-related-books/' + id)
                 .then(
@@ -55,13 +55,13 @@ function setupSingle(id) {
                     // render related books links
                     renderRelated(books);
                 })
-                .then(function(){
+                .then(function () {
                     // setup link handling
                     setupLinks();
                 })
-            ;
+                ;
         })
-    ;
+        ;
 }
 
 // render index page content
@@ -80,27 +80,27 @@ function renderIndex(books) {
         info.classList = 'col-md-6 mt-2 px-5 ' + (i % 2 == 0 ? 'text-end order-1' : 'text-start order-2');
 
         // create info items
-            // title
-            let title = document.createElement('p');
-            title.classList = 'display-4';
-            title.textContent = book.name;
-            info.appendChild(title);
+        // title
+        let title = document.createElement('p');
+        title.classList = 'display-4';
+        title.textContent = book.name;
+        info.appendChild(title);
 
-            // description
-            if (book.description.length > 0) {
-                let lead = document.createElement('p');
-                lead.classList = 'lead';
-                lead.textContent = (book.description.split(' ').slice(0, 32).join(' ')) + '...';
-                info.appendChild(lead);
-            }
+        // description
+        if (book.description.length > 0) {
+            let lead = document.createElement('p');
+            lead.classList = 'lead';
+            lead.textContent = (book.description.split(' ').slice(0, 32).join(' ')) + '...';
+            info.appendChild(lead);
+        }
 
-            // "See more" button
-            let btn = document.createElement('a');
-            btn.classList = 'btn btn-success see-more ' + (i % 2 == 0 ? 'float-right' : 'float-left');
-            btn.textContent = 'Apskatīt';
-            btn.href = '#';
-            btn.dataset.bookId = book.id;
-            info.appendChild(btn);
+        // "See more" button
+        let btn = document.createElement('a');
+        btn.classList = 'btn btn-success see-more ' + (i % 2 == 0 ? 'float-right' : 'float-left');
+        btn.textContent = 'Apskatīt';
+        btn.href = '#';
+        btn.dataset.bookId = book.id;
+        info.appendChild(btn);
 
         // add info div to row
         row.appendChild(info);
@@ -109,24 +109,25 @@ function renderIndex(books) {
         let image = document.createElement('div');
         image.classList = 'col-md-6 text-center ' + (i % 2 == 0 ? 'order-2' : 'order-1');
 
-            // create image
-            let img = document.createElement('img');
-            img.classList = 'img-fluid img-thumbnail rounded-lg w-50';
-            img.alt = book.name;
-            img.src = book.image;
-            image.appendChild(img);
+        // create image
+        let img = document.createElement('img');
+        img.classList = 'img-fluid img-thumbnail rounded-lg w-50';
+        img.alt = book.name;
+        img.src = book.image;
+        image.appendChild(img);
 
-            // add image div to row
-            row.appendChild(image);
+        // add image div to row
+        row.appendChild(image);
 
         // add row to document
         root.appendChild(row);
     }
 }
 
+
+
 // render main panel of single book page
 function renderSingle(book) {
-
     // create row
     let row = document.createElement('div');
     row.classList = 'row mb-5';
@@ -136,67 +137,81 @@ function renderSingle(book) {
     info.classList = 'col-md-6 pt-5';
 
     // create info items
-        // title
-        let title = document.createElement('h1');
-        title.classList = 'display-3';
-        title.textContent = book.name;
-        info.appendChild(title);
+    // title
+    let title = document.createElement('h1');
+    title.classList = 'display-3';
+    title.textContent = book.name;
+    info.appendChild(title);
 
-        // full description
-        if (book.description.length > 0) {
-            let lead = document.createElement('p');
-            lead.classList = 'lead';
-            lead.textContent = book.description;
-            info.appendChild(lead);
-        }
+    // full description
+    let descriptionContainer = document.createElement('div');
+    descriptionContainer.classList = 'description-container';
 
-        // data
-        let dl = document.createElement('dl');
-        dl.classList = 'row';
+    let lead = document.createElement('p');
+    lead.classList = 'lead truncated';
+    lead.textContent = book.description.split(' ').slice(0, 32).join(' ') + '...';
+    descriptionContainer.appendChild(lead);
 
-            // year
-            let yearLabel = document.createElement('dt');
-            yearLabel.classList = 'col-sm-3';
-            yearLabel.textContent = 'Gads';
-            dl.appendChild(yearLabel);
+    let readMoreButton = document.createElement('button');
+    readMoreButton.classList = 'btn btn-info read-more';
+    readMoreButton.textContent = 'Lasīt vairāk';
+    descriptionContainer.appendChild(readMoreButton);
 
-            let yearValue = document.createElement('dd');
-            yearValue.classList = 'col-sm-9';
-            yearValue.textContent = book.year;
-            dl.appendChild(yearValue);
+    let closeButton = document.createElement('button');
+    closeButton.classList = 'btn btn-secondary close';
+    closeButton.textContent = 'Aizvērt';
+    descriptionContainer.appendChild(closeButton);
+    closeButton.style.display = 'none'; // Hide the "Close" button initially
 
-            // price
-            let priceLabel = document.createElement('dt');
-            priceLabel.classList = 'col-sm-3';
-            priceLabel.textContent = 'Cena';
-            dl.appendChild(priceLabel);
+    info.appendChild(descriptionContainer);
 
-            let priceValue = document.createElement('dd');
-            priceValue.classList = 'col-sm-9';
-            priceValue.innerHTML = "&euro; " + book.price;
-            dl.appendChild(priceValue);
+    // data
+    let dl = document.createElement('dl');
+    dl.classList = 'row';
 
-            // genre
-            if (book.genre.length > 0) {
-                let genreLabel = document.createElement('dt');
-                genreLabel.classList = 'col-sm-3';
-                genreLabel.textContent = 'Žanrs';
-                dl.appendChild(genreLabel);
+    // year
+    let yearLabel = document.createElement('dt');
+    yearLabel.classList = 'col-sm-3';
+    yearLabel.textContent = 'Gads';
+    dl.appendChild(yearLabel);
 
-                let genreValue = document.createElement('dd');
-                genreValue.classList = 'col-sm-9';
-                genreValue.textContent = book.genre;
-                dl.appendChild(genreValue);
-            }
+    let yearValue = document.createElement('dd');
+    yearValue.classList = 'col-sm-9';
+    yearValue.textContent = book.year;
+    dl.appendChild(yearValue);
 
-        info.appendChild(dl);
+    // price
+    let priceLabel = document.createElement('dt');
+    priceLabel.classList = 'col-sm-3';
+    priceLabel.textContent = 'Cena';
+    dl.appendChild(priceLabel);
 
-        // "Go back" button
-        let btn = document.createElement('a');
-        btn.classList = 'btn btn-dark go-back float-left';
-        btn.textContent = 'Uz sākumu';
-        btn.href = '#';
-        info.appendChild(btn);
+    let priceValue = document.createElement('dd');
+    priceValue.classList = 'col-sm-9';
+    priceValue.innerHTML = "&euro; " + book.price;
+    dl.appendChild(priceValue);
+
+    // genre
+    if (book.genre.length > 0) {
+        let genreLabel = document.createElement('dt');
+        genreLabel.classList = 'col-sm-3';
+        genreLabel.textContent = 'Žanrs';
+        dl.appendChild(genreLabel);
+
+        let genreValue = document.createElement('dd');
+        genreValue.classList = 'col-sm-9';
+        genreValue.textContent = book.genre;
+        dl.appendChild(genreValue);
+    }
+
+    info.appendChild(dl);
+
+    // "Go back" button
+    let btn = document.createElement('a');
+    btn.classList = 'btn btn-dark go-back float-left';
+    btn.textContent = 'Uz sākumu';
+    btn.href = '#';
+    info.appendChild(btn);
 
     // add info div to row
     row.appendChild(info);
@@ -205,18 +220,32 @@ function renderSingle(book) {
     let image = document.createElement('div');
     image.classList = 'col-md-6 text-center p-5';
 
-        // create image
-        let img = document.createElement('img');
-        img.classList = 'img-fluid img-thumbnail rounded-lg';
-        img.alt = book.name;
-        img.src = book.image;
-        image.appendChild(img);
+    // create image
+    let img = document.createElement('img');
+    img.classList = 'img-fluid img-thumbnail rounded-lg';
+    img.alt = book.name;
+    img.src = book.image;
+    image.appendChild(img);
 
-        // add image div to row
-        row.appendChild(image);
+    // add image div to row
+    row.appendChild(image);
 
     // add row to document
     root.appendChild(row);
+
+    // add event listeners for "Read more" and "Close" buttons
+    readMoreButton.addEventListener('click', function () {
+        lead.textContent = book.description;
+        readMoreButton.style.display = 'none';
+        closeButton.style.display = 'block';
+    });
+
+    closeButton.addEventListener('click', function () {
+        lead.textContent = book.description.split(' ').slice(0, 32).join(' ') + '...';
+        closeButton.style.display = 'none';
+        readMoreButton.style.display = 'block';
+    });
+
 }
 
 // render related books panel of single book page
@@ -295,7 +324,7 @@ function setupLinks() {
     // "see more" links
     let seeMores = document.querySelectorAll('a.see-more');
     for (let a of seeMores) {
-        a.addEventListener("click", function(event){
+        a.addEventListener("click", function (event) {
             event.preventDefault();
             let id = a.dataset.bookId;
             setupSingle(id);
@@ -305,7 +334,7 @@ function setupLinks() {
     // "go back" links
     let goBacks = document.querySelectorAll('a.go-back');
     for (let a of goBacks) {
-        a.addEventListener("click", function(event){
+        a.addEventListener("click", function (event) {
             event.preventDefault();
             setupIndex();
         });
@@ -340,7 +369,7 @@ function removeLoader() {
 
 
 // start when page is loaded
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function () {
 
     // get root element
     root = document.getElementById('root');
