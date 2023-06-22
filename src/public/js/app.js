@@ -92,6 +92,32 @@ function renderIndex(books) {
             lead.classList = 'lead';
             lead.textContent = (book.description.split(' ').slice(0, 32).join(' ')) + '...';
             info.appendChild(lead);
+
+            let readMoreButton = document.createElement('button');
+            readMoreButton.classList = 'btn btn-info read-more '  + (i % 2 == 0 ? 'float-right' : 'float-left');
+            readMoreButton.style.marginRight = '10px'
+            readMoreButton.textContent = 'Lasīt vairāk';
+            info.appendChild(readMoreButton);
+
+            let closeButton = document.createElement('button');
+            closeButton.classList = 'btn btn-secondary close ' + (i % 2 == 0 ? 'float-right' : 'float-left');
+            closeButton.style.marginRight = '10px'
+            closeButton.textContent = 'Aizvērt';
+            info.appendChild(closeButton);
+            closeButton.style.display = 'none'; // Hide the "Close" button initially
+
+            // add event listeners for "Read more" and "Close" buttons
+            readMoreButton.addEventListener('click', function () {
+            lead.textContent = book.description;
+            readMoreButton.style.display = 'none';
+            closeButton.style.display = 'inline';
+            });
+    
+            closeButton.addEventListener('click', function () {
+            lead.textContent = book.description.split(' ').slice(0, 32).join(' ') + '...';
+            closeButton.style.display = 'none';
+            readMoreButton.style.display = 'inline';
+            });
         }
 
         // "See more" button
